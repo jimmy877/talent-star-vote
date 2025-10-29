@@ -63,7 +63,17 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
-    background: linear-gradient(180deg, hsl(0 0% 4%), hsl(0 0% 6%));
+    /* Layered gradient inspired by the reference: subtle diagonal light sweep + red accent */
+    background:
+      radial-gradient(900px 520px at -10% -20%, hsl(var(--primary) / 0.35), transparent 60%),
+      linear-gradient(125deg,
+        hsla(210, 40%, 92%, 0.22) 0%,
+        hsla(210, 40%, 88%, 0.12) 18%,
+        hsla(210, 40%, 82%, 0.08) 28%,
+        hsla(210, 40%, 70%, 0.04) 38%,
+        transparent 48%
+      ),
+      linear-gradient(180deg, hsl(0 0% 4%), hsl(0 0% 6%));
     min-height: 100vh;
     font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
@@ -72,6 +82,11 @@ All colors MUST be HSL.
     font-family: 'IBM Plex Sans', sans-serif;
     font-weight: 700;
   }
+
+  /* Reference-based typography scale */
+  h1 { @apply text-5xl md:text-6xl leading-tight; }
+  h2 { @apply text-3xl md:text-4xl; }
+  p  { @apply text-base md:text-lg; }
 
   .font-serif {
     font-family: 'Times New Roman', Times, serif;
@@ -117,7 +132,20 @@ All colors MUST be HSL.
     50% { box-shadow: 0 0 40px hsl(var(--glow-primary) / 0.6); }
   }
 
+  :root {
+    /* Star color tuned to the cool diagonal light */
+    --star-color: 210 70% 85%;
+  }
+
   .particle {
+    width: 4px;
+    height: 4px;
+    background-color: hsl(var(--star-color));
+    border-radius: 9999px;
     animation: float 6s ease-in-out infinite;
+    box-shadow:
+      0 0 6px hsl(var(--star-color) / 0.8),
+      0 0 14px hsl(var(--star-color) / 0.6);
+    mix-blend-mode: screen;
   }
 }

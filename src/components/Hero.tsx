@@ -40,10 +40,10 @@ export const Hero = ({ language, onLanguageChange, onScrollToVoting, onShowRules
       <div className="absolute bottom-20 right-1/4 w-80 h-80 bg-secondary/20 rounded-full blur-[100px] animate-float" style={{ animationDelay: "2s" }} />
       
       {/* Particles */}
-      {[...Array(20)].map((_, i) => (
+      {[...Array(28)].map((_, i) => (
         <div
           key={i}
-          className="absolute w-1 h-1 bg-accent rounded-full particle"
+          className="absolute particle"
           style={{
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
@@ -62,17 +62,24 @@ export const Hero = ({ language, onLanguageChange, onScrollToVoting, onShowRules
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center animate-fade-in">
         <div className="flex items-center justify-center gap-3 mb-6">
           <Sparkles className="w-8 h-8 text-accent animate-pulse" />
-          <h1 className="text-6xl md:text-8xl font-bold glow-text bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+          <h1 className="text-5xl md:text-6xl leading-tight font-bold glow-text bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
             {text.title}
           </h1>
           <Sparkles className="w-8 h-8 text-accent animate-pulse" style={{ animationDelay: "0.5s" }} />
         </div>
-        
-        <p className="text-2xl md:text-3xl text-secondary font-medium mb-4">
-          {text.subtitle}
-        </p>
-        
-        <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto">
+
+        <div className="flex items-center justify-center gap-3 text-secondary font-medium mb-4">
+          <p className="text-xl md:text-2xl">{text.subtitle}</p>
+          <img
+            src="/reputation-house.svg"
+            alt="Reputation House"
+            className="h-6 md:h-8 opacity-90"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+
+        <p className="text-base md:text-lg text-muted-foreground mb-12 max-w-2xl mx-auto">
           {text.description}
         </p>
 

@@ -47,8 +47,9 @@ export const Footer = ({ language }: FooterProps) => {
           </div>
 
           <div className="text-center md:text-right">
-            <div className="text-4xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              Night of Talents
+            <div className="inline-flex items-center justify-end gap-3">
+              <span className="text-xl font-bold">Night of Talents</span>
+              <img src="/reputation-house.svg" alt="Reputation House" className="h-6 opacity-90" />
             </div>
             <div className="text-sm text-muted-foreground mt-2">by Reputation House</div>
           </div>

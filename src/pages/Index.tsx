@@ -288,7 +288,7 @@ const Index = () => {
 
       {/* About Section */}
       <section className="max-w-4xl mx-auto px-6 py-20 text-center">
-        <h2 className="text-4xl font-bold mb-6 glow-text">{text.about}</h2>
+        <h2 className="text-3xl md:text-4xl font-bold mb-6 glow-text">{text.about}</h2>
         <p className="text-lg text-muted-foreground leading-relaxed mb-6">{text.aboutText}</p>
         <Button variant="link" onClick={handleShowRules} className="text-primary">
           {text.rules} →
@@ -297,7 +297,7 @@ const Index = () => {
 
       {/* Voting Section */}
       <section ref={votingRef} className="max-w-7xl mx-auto px-6 py-20">
-        <h2 className="text-5xl font-bold text-center mb-16 glow-text">{text.voting}</h2>
+        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 glow-text">{text.voting}</h2>
 
         <div className="grid gap-8">
           {nominations_list.map((nomination) => (
