@@ -99,10 +99,13 @@ if (isNewcomer ) {
           <UiMockMultiSelect
             language={language}
             key="newcomer-multiselect"
+            onChange={(names: string[]) => {
+              const updated = names.map((n, i) => ({ id: `new-${i}`, name: n, story: "" }));
+              setNominees(updated);
+              onNomineesChange(updated);
+            }}
           />
         )}
-
-       
       </div>
     </div>
   );
@@ -126,6 +129,11 @@ if ( isStep) {
           <SessionsSpeakersMulti
             language={language}
             key="step-multiselect"
+            onChange={(names: string[]) => {
+              const updated = names.map((n, i) => ({ id: `step-${i}`, name: n, story: "" }));
+              setNominees(updated);
+              onNomineesChange(updated);
+            }}
           />
         )}
       </div>

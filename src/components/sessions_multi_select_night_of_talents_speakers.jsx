@@ -49,7 +49,7 @@ function useKeyboardNav(itemsCount, isOpen){
   };
 }
 
-export default function SessionsMultiSelect({ language = "ru" }){
+export default function SessionsMultiSelect({ language = "ru", onChange }){
   const t = {
     ru: {
       headerTitle: "Список степов — мультивыбор",
@@ -75,18 +75,53 @@ export default function SessionsMultiSelect({ language = "ru" }){
     }
   }[language];
 
+  // Clean i18n texts independent from original encoding
+  const i18n = useMemo(() => (
+    language === 'ru'
+      ? {
+          headerTitle: 'Список степов — мультивыбор',
+          headerDesc: 'Первая строка — фамилия и имя (первые два слова), вторая — название степа. Можно выбрать несколько.',
+          selected: 'Выбрано',
+          search: 'Поиск…',
+          selectAll: 'Выбрать всех из результата',
+          clear: 'Очистить',
+          empty: 'Ничего не найдено',
+          hint: 'Подсказка: ↑/↓ — перемещение, Enter/Space — выбрать.',
+          chipRemoveAria: (name) => `Удалить ${name}`,
+        }
+      : {
+          headerTitle: 'Sessions — multi-select',
+          headerDesc: 'Line 1: surname + name; Line 2: session title. Multi-select allowed.',
+          selected: 'Selected',
+          search: 'Search…',
+          selectAll: 'Select all from results',
+          clear: 'Clear',
+          empty: 'No results',
+          hint: 'Hint: ↑/↓ to move, Enter/Space to select.',
+          chipRemoveAria: (name) => `Remove ${name}`,
+        }
+  ), [language]);
+
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState([]); // stores ids
   const rootRef = useRef(null);
 
-  const sessions = useMemo(() => RAW_SESSIONS.map((s, idx) => ({
-    id: idx,
-    name: s.name,
-    title: s.title,
-    initials: initialsFrom(s.name),
-    firstTwo: firstTwo(s.name),
-  })), []);
+  function ruToEn(str){
+    const map = {А:'A',Б:'B',В:'V',Г:'G',Д:'D',Е:'E',Ё:'Yo',Ж:'Zh',З:'Z',И:'I',Й:'Y',К:'K',Л:'L',М:'M',Н:'N',О:'O',П:'P',Р:'R',С:'S',Т:'T',У:'U',Ф:'F',Х:'Kh',Ц:'Ts',Ч:'Ch',Ш:'Sh',Щ:'Sch',Ъ:'',Ы:'Y',Ь:'',Э:'E',Ю:'Yu',Я:'Ya',а:'a',б:'b',в:'v',г:'g',д:'d',е:'e',ё:'yo',ж:'zh',з:'z',и:'i',й:'y',к:'k',л:'l',м:'m',н:'n',о:'o',п:'p',р:'r',с:'s',т:'t',у:'u',ф:'f',х:'kh',ц:'ts',ч:'ch',ш:'sh',щ:'sch',ъ:'',ы:'y',ь:'',э:'e',ю:'yu',я:'ya'};
+    return (str||'').split('').map(ch => map[ch] ?? ch).join('');
+  }
+  const sessions = useMemo(() => RAW_SESSIONS.map((s, idx) => {
+    const name = language === 'en' ? ruToEn(s.name) : s.name;
+    const title = language === 'en' ? ruToEn(s.title) : s.title;
+    return {
+      id: idx,
+      name,
+      title,
+      initials: initialsFrom(name),
+      firstTwo: firstTwo(name),
+    };
+  }), [language]);
 
   const filtered = useMemo(() => {
     if(!query.trim()) return sessions;
@@ -124,6 +159,16 @@ export default function SessionsMultiSelect({ language = "ru" }){
     if(e.key === "Enter" || e.key === " "){ e.preventDefault(); handleItemActivate(active); }
   }
 
+  // Notify parent about selection (speaker names only)
+  useEffect(() => {
+    if (typeof onChange === 'function') {
+      const names = selected
+        .map(id => sessions.find(s => s.id === id)?.name)
+        .filter(Boolean);
+      try { onChange(names); } catch (_) {}
+    }
+  }, [selected, sessions, onChange]);
+
   return (
     <div className="w-full text-white  z-[9]">
       <div>
@@ -153,7 +198,7 @@ export default function SessionsMultiSelect({ language = "ru" }){
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-2">
                 <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-white/10 text-xs">{selected.length}</span>
-                <span className="text-sm text-white/80">{selected.length > 0 ? t.selected : t.search}</span>
+                <span className="text-sm text-white/80">{selected.length > 0 ? i18n.selected : i18n.search}</span>
               </div>
               <svg className={cn("h-4 w-4 transition-transform", open ? "rotate-180" : "rotate-0")} viewBox="0 0 20 20" fill="currentColor" aria-hidden>
                 <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.21 8.29a.75.75 0 01.02-1.08z" />
@@ -168,22 +213,22 @@ export default function SessionsMultiSelect({ language = "ru" }){
                 <div className="flex items-center gap-2 rounded-xl bg-black/20 px-3 py-2">
                   <svg viewBox="0 0 24 24" stroke="currentColor" className="h-4 w-4 text-white/60"><circle cx="11" cy="11" r="7" fill="none" strokeWidth="1.5"/><path d="M20 20l-3.5-3.5" strokeWidth="1.5"/></svg>
                   <input
-                    aria-label={t.search}
+                    aria-label={i18n.search}
                     value={query}
                     onChange={(e) => { setQuery(e.target.value); setActive(0); }}
                     autoFocus
-                    placeholder={t.search}
+                    placeholder={i18n.search}
                     className="w-full bg-transparent text-sm placeholder:text-white/40 focus:outline-none"
                   />
                 </div>
                 <div className="mt-2 flex items-center justify-between text-xs text-white/60">
-                  <button onClick={selectAllFiltered} className="hover:text-white/90">{t.selectAll}</button>
-                  <button onClick={clearAll} className="hover:text-white/90">{t.clear}</button>
+                  <button onClick={selectAllFiltered} className="hover:text-white/90">{i18n.selectAll}</button>
+                  <button onClick={clearAll} className="hover:text-white/90">{i18n.clear}</button>
                 </div>
               </div>
 
               <ul className="max-h-[420px] overflow-auto p-2 scrollbar-styled">
-                {filtered.length === 0 && (<li className="px-3 py-6 text-center text-sm text-white/60">{t.empty}</li>)}
+                {filtered.length === 0 && (<li className="px-3 py-6 text-center text-sm text-white/60">{i18n.empty}</li>)}
                 {filtered.map((s, idx) => {
                   const isActive = idx === active;
                   const isChecked = selected.includes(s.id);
@@ -222,7 +267,7 @@ export default function SessionsMultiSelect({ language = "ru" }){
                 })}
               </ul>
 
-              <div className="border-t border-white/10 p-3 text-[11px] text-white/60">{t.hint}</div>
+              <div className="border-t border-white/10 p-3 text-[11px] text-white/60">{i18n.hint}</div>
             </div>
           )}
         </div>

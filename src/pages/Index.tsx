@@ -34,6 +34,35 @@ const Index = () => {
   const [nominations, setNominations] = useState<Record<string, Nominee[]>>({});
   const { toast } = useToast();
   const votingRef = useRef<HTMLDivElement>(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  // Google Apps Script endpoint (env first, then fallback)
+  const GS_ENDPOINT = import.meta.env.VITE_GS_ENDPOINT ||
+    "https://script.google.com/macros/s/AKfycbw_65secyc7bQooNxSDuR2XVzxBbtBd6bDpmkaX_dcA-Wk12BwP3sbt8xdUk8rW_91Q/exec";
+  const GS_SECRET = import.meta.env.VITE_GS_SECRET as string | undefined;
+
+  async function sendToGoogle(payload: any) {
+    const body = new URLSearchParams();
+    if (GS_SECRET) body.append("t", GS_SECRET);
+    body.append("json", JSON.stringify(payload));
+    try {
+      const res = await fetch(GS_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+        body,
+      });
+      try { const j = await res.json(); return !!j?.ok || res.ok; } catch { /* fallthrough */ }
+      return res.ok;
+    } catch (e) {
+      // Fallback for strict CORS: fire-and-forget
+      try {
+        await fetch(GS_ENDPOINT, { method: "POST", body, mode: "no-cors" });
+        return true; // cannot read response, assume success
+      } catch {
+        return false;
+      }
+    }
+  }
 
   const scrollToVoting = () => {
     votingRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -49,7 +78,7 @@ const Index = () => {
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!agreed) {
       toast({
         title: language === "ru" ? "Требуется согласие" : "Consent Required",
@@ -74,6 +103,47 @@ const Index = () => {
           language === "ru"
             ? "Пожалуйста, заполните хотя бы одну номинацию"
             : "Please fill in at least one nomination",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Send to Google Sheet via Apps Script
+    setSubmitting(true);
+    // Sanitize nominations to reduce noise
+    const compactNominations = Object.fromEntries(
+      Object.entries(nominations).map(([k, arr]) => [
+        k,
+        (arr || []).filter((n) => (n?.name || "").trim() || (n?.story || "").trim()),
+      ])
+    );
+
+    // Titles and order (current language) so Apps Script может красиво разложить по колонкам
+    const nominationTitles = Object.fromEntries(
+      (nominations_list || []).map((n) => [n.id, n.title])
+    );
+    const nominationOrder = (nominations_list || []).map((n) => n.id).filter((id) =>
+      (compactNominations as any)[id]?.length
+    );
+
+    const ok = await sendToGoogle({
+      language,
+      agreed,
+      filledNominations,
+      nominations: compactNominations,
+      nominationTitles,
+      nominationOrder,
+      userAgent: navigator.userAgent,
+      ts: new Date().toISOString(),
+    });
+    setSubmitting(false);
+    if (!ok) {
+      toast({
+        title: language === "ru" ? "Ошибка отправки" : "Submission Error",
+        description:
+          language === "ru"
+            ? "Не удалось отправить данные. Попробуйте ещё раз позже."
+            : "Could not submit your vote. Please try again later.",
         variant: "destructive",
       });
       return;
@@ -335,10 +405,10 @@ const Index = () => {
           <Button
             size="lg"
             onClick={handleSubmit}
-            disabled={!agreed}
+            disabled={!agreed || submitting}
             className="w-full text-lg py-6 bg-gradient-to-r from-primary to-secondary hover:shadow-glow-lg transition-all duration-300"
           >
-            {text.submitButton}
+            {submitting ? (language === 'ru' ? 'Отправляем...' : 'Submitting...') : text.submitButton}
           </Button>
         </div>
       </section>
