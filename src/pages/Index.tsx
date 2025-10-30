@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { Hero } from "@/components/Hero";
+import { Header } from "@/components/Header";
 import { NominationCard } from "@/components/NominationCard";
 import { StickyTimer } from "@/components/StickyTimer";
 import { FAQ } from "@/components/FAQ";
@@ -279,9 +280,9 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
+      <Header language={language} onLanguageChange={setLanguage} />
       <Hero
         language={language}
-        onLanguageChange={setLanguage}
         onScrollToVoting={scrollToVoting}
         onShowRules={handleShowRules}
       />
@@ -302,6 +303,7 @@ const Index = () => {
         <div className="grid gap-8">
           {nominations_list.map((nomination) => (
             <NominationCard
+              id={nomination.id}
               key={nomination.id}
               title={nomination.title}
               description={nomination.description}

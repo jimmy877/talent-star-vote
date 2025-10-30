@@ -1,20 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { Countdown } from "@/components/Countdown";
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { Sparkles } from "lucide-react";
 
 interface HeroProps {
   language: "ru" | "en";
-  onLanguageChange: (lang: "ru" | "en") => void;
   onScrollToVoting: () => void;
   onShowRules: () => void;
 }
 
-export const Hero = ({ language, onLanguageChange, onScrollToVoting, onShowRules }: HeroProps) => {
+export const Hero = ({ language, onScrollToVoting, onShowRules }: HeroProps) => {
   const content = {
     en: {
       title: "Night of Talents Award",
-      subtitle: "by Reputation House",
+    
       description: "Celebrate the people who make impossible happen.",
       voteButton: "Start Voting",
       rulesButton: "Rules & Transparency",
@@ -22,7 +20,7 @@ export const Hero = ({ language, onLanguageChange, onScrollToVoting, onShowRules
     },
     ru: {
       title: "Премия «Ночь Талантов»",
-      subtitle: "от Reputation House",
+      
       description: "Отмечаем тех, кто делает невозможное возможным.",
       voteButton: "Перейти к голосованию",
       rulesButton: "Правила и прозрачность",
@@ -53,10 +51,7 @@ export const Hero = ({ language, onLanguageChange, onScrollToVoting, onShowRules
         />
       ))}
 
-      {/* Language Switcher */}
-      <div className="absolute top-8 right-8 z-20">
-        <LanguageSwitcher language={language} onLanguageChange={onLanguageChange} />
-      </div>
+      {/* Header now contains the language switcher */}
 
       {/* Content */}
       <div className="relative z-10 max-w-5xl mx-auto px-6 text-center animate-fade-in">
@@ -69,14 +64,14 @@ export const Hero = ({ language, onLanguageChange, onScrollToVoting, onShowRules
         </div>
 
         <div className="flex items-center justify-center gap-3 text-secondary font-medium mb-4">
-          <p className="text-xl md:text-2xl">{text.subtitle}</p>
+          {/* <p className="text-xl md:text-2xl">{text.subtitle}</p>
           <img
             src="/reputation-house.svg"
             alt="Reputation House"
             className="h-6 md:h-8 opacity-90"
             loading="eager"
             decoding="async"
-          />
+          /> */}
         </div>
 
         <p className="text-base md:text-lg text-muted-foreground mb-12 max-w-2xl mx-auto">

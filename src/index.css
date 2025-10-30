@@ -148,4 +148,31 @@ All colors MUST be HSL.
       0 0 14px hsl(var(--star-color) / 0.6);
     mix-blend-mode: screen;
   }
+
+  /* Custom scrollbar for dropdown lists (explicit and role-based selectors) */
+  .scrollbar-styled,
+  [role="listbox"] {
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: hsl(0 85% 55%) #0a0a0a; /* thumb red, track black */
+  }
+  .scrollbar-styled::-webkit-scrollbar,
+  [role="listbox"]::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  .scrollbar-styled::-webkit-scrollbar-track,
+  [role="listbox"]::-webkit-scrollbar-track {
+    background: #0a0a0a;
+    border-radius: 8px;
+  }
+  .scrollbar-styled::-webkit-scrollbar-thumb,
+  [role="listbox"]::-webkit-scrollbar-thumb {
+    background: hsl(0 85% 55%);
+    border-radius: 8px;
+    border: 2px solid #0a0a0a;
+  }
+  .scrollbar-styled::-webkit-scrollbar-thumb:hover,
+  [role="listbox"]::-webkit-scrollbar-thumb:hover {
+    background: hsl(0 72% 45%);
+  }
 }

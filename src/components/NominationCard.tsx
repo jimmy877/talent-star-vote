@@ -4,6 +4,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Plus, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import UiMockMultiSelect from "@/components/multi_select_dropdown_night_of_talents_ui_mock.jsx";
+import SessionsSpeakersMulti from "@/components/sessions_multi_select_night_of_talents_speakers.jsx";
 
 interface Nominee {
   id: string;
@@ -12,6 +14,7 @@ interface Nominee {
 }
 
 interface NominationCardProps {
+  id: string;
   title: string;
   description: string;
   icon: React.ReactNode;
@@ -20,6 +23,7 @@ interface NominationCardProps {
 }
 
 export const NominationCard = ({
+  id,
   title,
   description,
   icon,
@@ -74,6 +78,60 @@ export const NominationCard = ({
 
   const filledCount = nominees.filter((n) => n.name.trim()).length;
   const maxStoryLength = 2000;
+
+  const isNewcomer = id === "newcomer";
+  const isStep = id === "step";
+if (isNewcomer ) {
+  return (
+    <div className="glass glass-hover p-4 md:p-5 rounded-xl animate-fade-in  z-[999]" >
+      <div className="flex items-start gap-4 mb-4">
+        <div className="p-3 rounded-xl bg-primary/10 text-primary glow-border">
+          {icon}
+        </div>
+        <div className="flex-1">
+          <h3 className="text-2xl font-bold mb-2">{title}</h3>
+          <p className="text-muted-foreground text-sm leading-relaxed">{description}</p>
+        </div>
+      </div>
+
+      <div className="mt-4">
+        {isNewcomer && (
+          <UiMockMultiSelect
+            language={language}
+            key="newcomer-multiselect"
+          />
+        )}
+
+       
+      </div>
+    </div>
+  );
+}
+if ( isStep) {
+  return (
+    <div className="glass glass-hover p-4 md:p-5 rounded-xl animate-fade-in  z-[998]" >
+      <div className="flex items-start gap-4 mb-4">
+        <div className="p-3 rounded-xl bg-primary/10 text-primary glow-border">
+          {icon}
+        </div>
+        <div className="flex-1">
+          <h3 className="text-2xl font-bold mb-2">{title}</h3>
+          <p className="text-muted-foreground text-sm leading-relaxed">{description}</p>
+        </div>
+      </div>
+
+      <div className="mt-4">
+      
+        {isStep && (
+          <SessionsSpeakersMulti
+            language={language}
+            key="step-multiselect"
+          />
+        )}
+      </div>
+    </div>
+  );
+}
 
   return (
     <div className="glass glass-hover p-6 rounded-2xl animate-fade-in">
