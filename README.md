@@ -1,5 +1,5 @@
 # Welcome to your Lovable project
-run codex resume 019a2bb5-4cd1-7ad3-bda8-0f0543cee6f1
+run codex resume 019a2bb5-4cd1-7ad3-bda8-0f0543cee6f1ssh
 
 ## Project info
 
