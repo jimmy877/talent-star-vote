@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Countdown } from "@/components/Countdown";
-import { Sparkles } from "lucide-react";
 
 interface HeroProps {
   language: "ru" | "en";
@@ -11,97 +10,79 @@ interface HeroProps {
 export const Hero = ({ language, onScrollToVoting, onShowRules }: HeroProps) => {
   const content = {
     en: {
-      title: "Night of Talents Award",
-    
-      description: "Celebrate the people who make impossible happen.",
+      nightOf: "NIGHT of",
+      talents: "TALENTS",
+      by: "by",
+      rh: "REPUTATION HOUSE",
+      tagline: "Celebrate the people who make the impossible possible",
       voteButton: "Start Voting",
       rulesButton: "Rules & Transparency",
-      deadline: "Voting closes on",
     },
     ru: {
-      title: "Премия «Ночь Талантов»",
-      
-      description: "Отмечаем тех, кто делает невозможное возможным.",
+      nightOf: "NIGHT of",
+      talents: "TALENTS",
+      by: "by",
+      rh: "REPUTATION HOUSE",
+      tagline: "Отмечаем тех, кто делает невозможное возможным",
       voteButton: "Перейти к голосованию",
-      rulesButton: "Правила и прозрачность",
-      deadline: "Голосование закрывается",
+      rulesButton: "правила и прозрачность",
     },
-  };
+  } as const;
 
   const text = content[language];
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/10 via-transparent to-transparent" />
-      <div className="absolute top-20 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[120px] animate-float" />
-      <div className="absolute bottom-20 right-1/4 w-80 h-80 bg-secondary/20 rounded-full blur-[100px] animate-float" style={{ animationDelay: "2s" }} />
-      
-      {/* Particles */}
-      {[...Array(28)].map((_, i) => (
-        <div
-          key={i}
-          className="absolute particle"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 6}s`,
-            animationDuration: `${4 + Math.random() * 4}s`,
-          }}
-        />
-      ))}
-
-      {/* Header now contains the language switcher */}
-
-      {/* Content */}
-      <div className="relative z-10 max-w-5xl mx-auto px-6 text-center animate-fade-in">
-        <div className="flex items-center justify-center gap-3 mb-6">
-          <Sparkles className="w-8 h-8 text-accent animate-pulse" />
-          <h1 className="text-5xl md:text-6xl leading-tight font-bold glow-text bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-            {text.title}
-          </h1>
-          <Sparkles className="w-8 h-8 text-accent animate-pulse" style={{ animationDelay: "0.5s" }} />
+    <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden hero-vignette">
+      <div className="relative z-10 max-w-6xl mx-auto px-6 text-center animate-fade-in">
+        {/* NIGHT of with lines */}
+        <div className="mb-6 flex items-center justify-center gap-6">
+          <span className="gold-line-soft w-24 md:w-40" />
+          <div className="gold-text font-serif tracking-[0.15em] text-3xl md:text-5xl uppercase">
+            {text.nightOf}
+          </div>
+          <span className="gold-line-soft w-24 md:w-40" />
         </div>
 
-        <div className="flex items-center justify-center gap-3 text-secondary font-medium mb-4">
-          {/* <p className="text-xl md:text-2xl">{text.subtitle}</p>
-          <img
-            src="/reputation-house.svg"
-            alt="Reputation House"
-            className="h-6 md:h-8 opacity-90"
-            loading="eager"
-            decoding="async"
-          /> */}
+        {/* TALENTS big */}
+        <h1 className="gold-text font-serif font-bold leading-none text-[64px] md:text-[120px] lg:text-[160px]">
+          {text.talents}
+        </h1>
+        <div className="gold-line mt-4 mb-6 w-4/5 mx-auto" />
+
+        {/* by REPUTATION HOUSE */}
+        <div className="mb-10 text-[hsl(38,35%,75%)]">
+          <span className="italic mr-2">{text.by}</span>
+          <span className="gold-text tracking-wide font-semibold">{text.rh}</span>
         </div>
 
-        <p className="text-base md:text-lg text-muted-foreground mb-12 max-w-2xl mx-auto">
-          {text.description}
-        </p>
-
-        {/* Countdown Timer */}
-        <div className="mb-12">
-          <Countdown language={language} />
+        {/* Countdown */}
+        <div className="mb-10">
+          <Countdown language={language} variant="hero" />
         </div>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Button 
-            size="lg" 
+        <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
+          <Button
+            size="lg"
             onClick={onScrollToVoting}
-            className="text-lg px-8 py-6 bg-gradient-to-r from-primary to-secondary hover:shadow-glow-lg transition-all duration-300 transform hover:scale-105"
+            className="text-base md:text-lg px-8 py-6 rounded-full bg-[hsl(32,70%,46%)] hover:bg-[hsl(32,70%,42%)] text-white shadow-lg"
           >
             {text.voteButton}
           </Button>
-          <Button 
-            size="lg" 
+          <Button
+            size="lg"
             variant="outline"
             onClick={onShowRules}
-            className="text-lg px-8 py-6 glass glass-hover border-primary/30"
+            className="text-base md:text-lg px-8 py-6 rounded-full border-[hsl(35,55%,60%)] text-[hsl(35,55%,80%)] hover:bg-white/5"
           >
             {text.rulesButton}
           </Button>
         </div>
+
+        {/* Tagline */}
+        <p className="mt-8 text-sm text-[hsl(35,35%,70%)]">{text.tagline}</p>
       </div>
     </section>
   );
 };
+

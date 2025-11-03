@@ -1,16 +1,15 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { Clock } from "lucide-react";
 
 interface CountdownProps {
   language: "ru" | "en";
   compact?: boolean;
-  variant?: "panel" | "hero"; // hero = minimal gold on dark background
 }
 
-export const Countdown = ({ language, compact = false, variant = "panel" }: CountdownProps) => {
-  // Deadline: November 14, 2025, 23:59 (TRT)
+export const Countdown = ({ language, compact = false }: CountdownProps) => {
+  // Deadline: November 14, 2025, 23:59 TRT (Europe/Istanbul)
   const deadline = new Date("2025-11-14T23:59:59+03:00");
-
+  
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -40,31 +39,30 @@ export const Countdown = ({ language, compact = false, variant = "panel" }: Coun
 
     calculateTimeLeft();
     const timer = setInterval(calculateTimeLeft, 1000);
+
     return () => clearInterval(timer);
   }, []);
 
   const content = {
     en: {
       timeRemaining: "Time remaining",
-      leftUntilEnd: "time left until voting ends",
       votingClosed: "Voting closed",
-      days: "days",
-      hours: "hours",
-      minutes: "minutes",
-      seconds: "seconds",
-      deadline: "Voting closes on November 14, 2025, 23:59",
+      days: "Days",
+      hours: "Hours",
+      minutes: "Minutes",
+      seconds: "Seconds",
+      deadline: "Voting closes on November 14, 2025, 23:59 TRT (Europe/Istanbul)",
     },
     ru: {
-      timeRemaining: "Осталось времени",
-      leftUntilEnd: "осталось до конца голосования",
+      timeRemaining: "Осталось до конца голосования",
       votingClosed: "Голосование завершено",
-      days: "дней",
-      hours: "часов",
-      minutes: "минут",
-      seconds: "секунд",
-      deadline: "Голосование закрывается 14 ноября 2025, 23:59",
+      days: "Дней",
+      hours: "Часов",
+      minutes: "Минут",
+      seconds: "Секунд",
+      deadline: "Голосование закрывается 14 ноября 2025, 23:59 TRT (Europe/Istanbul)",
     },
-  } as const;
+  };
 
   const text = content[language];
 
@@ -96,35 +94,10 @@ export const Countdown = ({ language, compact = false, variant = "panel" }: Coun
     );
   }
 
-  if (variant === "hero") {
-    return (
-      <div className="text-center">
-        <p className="text-[13px] text-[hsl(38,40%,75%)]/90 mb-6 tracking-wide">
-          {text.leftUntilEnd}
-        </p>
-        <div className="grid grid-cols-4 gap-8 md:gap-14 mb-6">
-          {[
-            { value: timeLeft.days, label: text.days },
-            { value: timeLeft.hours, label: text.hours },
-            { value: timeLeft.minutes, label: text.minutes },
-            { value: timeLeft.seconds, label: text.seconds },
-          ].map((item, index) => (
-            <div key={index} className="text-center">
-              <div className="gold-text text-5xl md:text-6xl lg:text-7xl font-serif font-bold mb-1">
-                {String(item.value).padStart(2, "0")}
-              </div>
-              <div className="text-[12px] uppercase tracking-wide text-[hsl(38,35%,70%)]">{item.label}</div>
-            </div>
-          ))}
-        </div>
-        <p className="text-xs text-[hsl(38,35%,70%)]">{text.deadline}</p>
-      </div>
-    );
-  }
-
   return (
     <div className="glass p-8 rounded-3xl max-w-3xl mx-auto glow-border">
       <p className="text-sm text-muted-foreground mb-4">{text.timeRemaining}</p>
+      
       <div className="grid grid-cols-4 gap-4 mb-6">
         {[
           { value: timeLeft.days, label: text.days },
@@ -140,6 +113,7 @@ export const Countdown = ({ language, compact = false, variant = "panel" }: Coun
           </div>
         ))}
       </div>
+
       <p className="text-xs text-muted-foreground">{text.deadline}</p>
     </div>
   );
