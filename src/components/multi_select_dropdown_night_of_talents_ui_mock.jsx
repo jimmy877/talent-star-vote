@@ -153,7 +153,7 @@ export default function NightOfTalentsMultiSelect({ language = "ru", onChange })
         .filter(Boolean);
       try { onChange(names); } catch (_) {}
     }
-  }, [selected, nominees, onChange]);
+  }, [selected, nominees]);
 
   return (
     <div className="w-full text-white z-[9] ">

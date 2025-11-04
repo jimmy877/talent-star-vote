@@ -99,7 +99,7 @@ export const Countdown = ({ language, compact = false, variant = "panel" }: Coun
   if (variant === "hero") {
     return (
       <div className="text-center">
-        <p className="text-[13px] text-[hsl(38,40%,75%)]/90 mb-6 tracking-wide">
+        <p className="text-[16px] text-[#bb7239] mb-6 tracking-wide">
           {text.leftUntilEnd}
         </p>
         <div className="grid grid-cols-4 gap-8 md:gap-14 mb-6">
@@ -110,14 +110,14 @@ export const Countdown = ({ language, compact = false, variant = "panel" }: Coun
             { value: timeLeft.seconds, label: text.seconds },
           ].map((item, index) => (
             <div key={index} className="text-center">
-              <div className="gold-text text-5xl md:text-6xl lg:text-7xl font-serif font-bold mb-1">
+              <div className="gold-text text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bodoni  mb-1 text-[#fce9a4] font-thin">
                 {String(item.value).padStart(2, "0")}
               </div>
-              <div className="text-[12px] uppercase tracking-wide text-[hsl(38,35%,70%)]">{item.label}</div>
+              <div className="text-[12px] uppercase tracking-wide text-[#bb7239]">{item.label}</div>
             </div>
           ))}
         </div>
-        <p className="text-xs text-[hsl(38,35%,70%)]">{text.deadline}</p>
+        <p className="text-[16px] mt-10 text-[#bb7239]">{text.deadline}</p>
       </div>
     );
   }

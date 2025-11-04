@@ -359,7 +359,7 @@ const Index = () => {
 
       {/* About Section */}
       <section className="max-w-4xl mx-auto px-6 py-20 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold mb-6 glow-text">{text.about}</h2>
+        <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 glow-text">{text.about}</h2>
         <p className="text-lg text-muted-foreground leading-relaxed mb-6">{text.aboutText}</p>
         <Button variant="link" onClick={handleShowRules} className="text-primary">
           {text.rules} →
@@ -406,7 +406,7 @@ const Index = () => {
             size="lg"
             onClick={handleSubmit}
             disabled={!agreed || submitting}
-            className="w-full text-lg py-6 bg-gradient-to-r from-primary to-secondary hover:shadow-glow-lg transition-all duration-300"
+            className="w-full text-lg py-6 bg-[#bb7239] hover:bg-[#bb7239] text-[#220300] hover:text-[#220300]from-primary to-secondary hover:shadow-glow-lg transition-all duration-300 " 
           >
             {submitting ? (language === 'ru' ? 'Отправляем...' : 'Submitting...') : text.submitButton}
           </Button>

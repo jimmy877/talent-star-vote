@@ -167,7 +167,7 @@ export default function SessionsMultiSelect({ language = "ru", onChange }){
         .filter(Boolean);
       try { onChange(names); } catch (_) {}
     }
-  }, [selected, sessions, onChange]);
+  }, [selected, sessions]);
 
   return (
     <div className="w-full text-white  z-[9]">

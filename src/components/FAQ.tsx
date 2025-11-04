@@ -70,7 +70,7 @@ export const FAQ = ({ language }: FAQProps) => {
     <section className="max-w-4xl mx-auto px-6 py-20">
       <div className="text-center mb-12">
         <HelpCircle className="w-12 h-12 text-accent mx-auto mb-4" />
-        <h2 className="text-3xl md:text-4xl font-bold glow-text">{text.title}</h2>
+        <h2 className="text-3xl md:text-4xl font-bold glow-text ">{text.title}</h2>
       </div>
 
       <Accordion type="single" collapsible className="space-y-4">
@@ -81,7 +81,7 @@ export const FAQ = ({ language }: FAQProps) => {
             className="glass glass-hover px-6 rounded-2xl border-none"
           >
             <AccordionTrigger className="text-left hover:no-underline">
-              <span className="font-semibold">{item.q}</span>
+              <span className="font-semibold front-mont">{item.q}</span>
             </AccordionTrigger>
             <AccordionContent className="text-muted-foreground">
               {item.a}

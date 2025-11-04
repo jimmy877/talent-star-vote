@@ -14,8 +14,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['IBM Plex Sans', 'system-ui', 'sans-serif'],
-        serif: ['Times New Roman', 'Times', 'serif'],
+        sans: ['Mont', 'system-ui', 'sans-serif'],
+        serif: ['Bodoni 72 C', 'Times New Roman', 'Times', 'serif'],
+        bodoni: ['Bodoni 72 C', 'Times New Roman', 'Times', 'serif'],
+        mont: ['Mont', 'system-ui', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
